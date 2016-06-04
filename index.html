@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html class="full" lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Calculadora para subredes.">
+		<meta name="author" content="Gustavo e Mauro">
+		<title>Calculadora de Sub-Redes</title>
+		<link href="css/full.css" rel="stylesheet">
+	</head>
+	<body>
+		<script>
+			function verificarcamposip(){
+				if((document.getElementById("part1").value > 255))
+				{
+					document.getElementById("part1").value = 255;
+				}
+				else if((document.getElementById("part1").value < 0))
+				{
+					document.getElementById("part1").value = 0;
+				}
+				
+				else if((document.getElementById("part2").value > 255))
+				{
+					document.getElementById("part2").value = 255;
+				}
+				else if((document.getElementById("part2").value < 0))
+				{
+					document.getElementById("part2").value = 0;
+				}
+				
+				else if((document.getElementById("part3").value > 255))
+				{
+					document.getElementById("part3").value = 255;
+				}
+				else if((document.getElementById("part3").value < 0))
+				{
+					document.getElementById("part3").value = 0;
+				}
+				
+				else if((document.getElementById("part4").value > 255))
+				{
+					document.getElementById("part4").value = 255;
+				}
+				else if((document.getElementById("part4").value < 0))
+				{
+					document.getElementById("part4").value = 0;
+				}
+				
+				else if((document.getElementById("part5").value > 32))
+				{
+					document.getElementById("part5").value = 32;
+				}
+				else if((document.getElementById("part5").value < 0))
+				{
+					document.getElementById("part5").value = 0;
+				}	
+				Parte1 = document.getElementById("part1").value;
+				if((Parte1 >= 0) && (Parte1 <= 127)){
+					document.getElementById("exibeclasse").innerHTML = "IP Classe: A";
+				}
+				else if((Parte1 >= 128) && (Parte1 <= 191)){
+					document.getElementById("exibeclasse").innerHTML = "IP Classe: B";
+				}
+				else if((Parte1 >= 192) && (Parte1 <= 223)){
+					document.getElementById("exibeclasse").innerHTML = "IP Classe: C";
+				}
+				else if((Parte1 >= 224) && (Parte1 <= 239)){
+					document.getElementById("exibeclasse").innerHTML = "IP Classe: D";
+				}
+				else if((Parte1 >= 240) && (Parte1 <= 255)){
+					document.getElementById("exibeclasse").innerHTML = "IP Classe: E";
+				}
+			}
+			function subredes(){
+				document.getElementById("inseririp").style.display = "none";
+				document.getElementById("subredes").style.display = "block";
+			}
+		</script>
+		<div class="centralizar">
+			<div id="logo" style="padding:10px;">
+				<h1 id="nome-topo">Calculadora de <br>Sub Redes</h1>
+			</div>
+			<div id="inseririp" class ="box-central">
+					<input class="input-ip" type="number" id="part1" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
+					<input class="input-ip" type="number" id="part2" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
+					<input class="input-ip" type="number" id="part3" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
+					<input class="input-ip" type="number" id="part4" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> \ </b>
+					<input class="input-ip" type="number" id="part5" value="0" min="0" max="32" onchange="verificarcamposip()"><br><br>
+					<b id="exibeclasse">IP Classe: A</b>
+					<br><br><button type="button" class="botao" onclick="subredes()">Continuar ></button>
+			</div>
+			<div id="subredes" class ="box-central">
+					Teste
+			</div>
+		</div>
+	</body>
+
+</html>

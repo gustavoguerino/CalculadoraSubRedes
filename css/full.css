@@ -1,0 +1,115 @@
+html, body {
+  height: 100%;
+  min-height: 100%;
+}
+
+@font-face {
+    font-family: "absender";
+    src: url("absender1.ttf") format("truetype");
+}
+.full {
+    background: url("../images/fundo2.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+#nome-topo {
+	text-align: center;  
+	font-size: 48px;
+	font-family: "absender";
+	text-shadow: 1px 0px 0px #c9c9c9, 
+                 -1px 0px 0px #c9c9c9, 
+                 0px 1px 0px #c9c9c9, 
+                 0px -1px 0px #c9c9c9;
+}
+#subredes{
+	display: none;
+}
+.input-ip{
+	border-radius: 5px;
+	border: 2px solid black;
+	font-size: 30px;
+	width: 80px;
+	text-align: center;
+}
+.botaolargo{
+	width: 150px;
+	height: 50px;
+	border-radius: 10px;
+	border: 2px solid black;
+	font-size: 30px;
+	background: rgba(255, 255, 255, 0.8);
+	color: black;
+	font-family: "absender";
+}
+.fonteabsender{
+	font-family: "absender";
+	font-size: 30px;
+}
+.box-central{
+	padding: 2em;
+	margin: 3em auto;
+	background: rgba(0, 0, 0, 0.8);
+	width:	800px;
+	height:	120px;
+	border: 2px solid black;
+	color: white;
+	border-radius:20px;
+	text-align: center;
+	
+}
+
+.centralizar {
+  height: 100%;
+  min-height: 100%;
+
+  display: -ms-flex;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-align-items: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  -ms-justify-content: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.botao {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
+	background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
+	background-color:#ffffff;
+	-moz-border-radius:7px;
+	-webkit-border-radius:7px;
+	border-radius:7px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family:Arial;
+	font-size:20px;
+	font-weight:bold;
+	padding:10px 24px;
+	text-decoration:none;
+	text-shadow:0px 2px 2px #ffffff;
+}
+.botao:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f6f6f6), color-stop(1, #ffffff));
+	background:-moz-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:-webkit-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:-o-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:-ms-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
+	background-color:#f6f6f6;
+}
+.botao:active {
+	position:relative;
+	top:1px;
+}
