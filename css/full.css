@@ -8,7 +8,7 @@ html, body {
     src: url("absender1.ttf") format("truetype");
 }
 .full {
-    background: url("../images/fundo2.jpg") no-repeat center center fixed;
+    background: url("../images/fundo3.jpg") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -29,12 +29,17 @@ html, body {
 #resultado{
 	display: none;
 	text-align: center;
-	margin: 1em auto;
+	margin: 3em auto;
 }
 #nomessubredes{
 	display: none;
 	text-align: center;
-	margin: 1em auto;
+	margin: 3em auto;
+}
+#CaboRede{
+	position:absolute;
+	top: 0px;
+	left: 0px;
 }
 .input-ip{
 	border-radius: 5px;
@@ -82,10 +87,10 @@ html, body {
 .box-central{
 	padding: 2em;
 	margin: 3em auto;
-	background: rgba(0, 0, 0, 0.8);
+	background: rgba(0, 0, 0, 0.6);
 	width:	800px;
 	height:	120px;
-	border: 2px solid black;
+	border: 1px solid black;
 	color: white;
 	border-radius:20px;
 	text-align: center;
@@ -93,7 +98,7 @@ html, body {
 }
 .box-transparente{
 	width:	800px;
-	background: rgba(0, 0, 0, 0.8);
+	background: rgba(0, 0, 0, 0.6);
 	color: white;
 	border-radius:20px;
 	text-align: center;

@@ -65,8 +65,8 @@
 					if(document.getElementById("part5").value < 8){
 						document.getElementById("part5").value = 8;
 					}
-					else if(document.getElementById("part5").value > 31){
-						document.getElementById("part5").value = 31;
+					else if(document.getElementById("part5").value > 29){
+						document.getElementById("part5").value = 29;
 					}
 					possubredes = document.getElementById("part5").value - 8;
 					possubredes =  Math.pow(2, possubredes);
@@ -77,8 +77,8 @@
 					if(document.getElementById("part5").value < 16){
 						document.getElementById("part5").value = 16;
 					}
-					else if(document.getElementById("part5").value > 31){
-						document.getElementById("part5").value = 31;
+					else if(document.getElementById("part5").value > 29){
+						document.getElementById("part5").value = 29;
 					}
 					possubredes = document.getElementById("part5").value - 16;
 					possubredes =  Math.pow(2, possubredes);
@@ -89,8 +89,8 @@
 					if(document.getElementById("part5").value < 24){
 						document.getElementById("part5").value = 24;
 					}
-					else if(document.getElementById("part5").value > 31){
-						document.getElementById("part5").value = 31;
+					else if(document.getElementById("part5").value > 29){
+						document.getElementById("part5").value = 29;
 					}
 					possubredes = document.getElementById("part5").value - 24;
 					possubredes =  Math.pow(2, possubredes);
@@ -100,6 +100,10 @@
 				if((possubredes == 128) || (possubredes == 8388608) || (possubredes == 32768)){
 					possubredes -= 1;
 				}
+			}
+			function voltexibirProximoescolhasubs(){
+				document.getElementById("inseririp").style.display = "block";
+				document.getElementById("subredes").style.display = "none";
 			}
 			function proximosubredes(){
 				document.getElementById("inseririp").style.display = "none";
@@ -124,11 +128,18 @@
 				document.getElementById("nomessubredes").style.display = "block";
 				gerarCampos();
 			}
+			function voltexibirResultado(){
+				document.getElementById("subredes").style.display = "block";
+				document.getElementById("conteudo").style.display = "flex";
+				document.getElementById("nomessubredes").style.display = "none";
+			}
 			var contadorids = 0;
 			function gerarCampos(){
 				contadorids = 0;
+				var elemento = document.getElementById("loopids");
+				elemento.innerHTML = ""
 				while(document.getElementById("sredes").value > contadorids){
-					var elemento = document.getElementById("loopids");
+					elemento = document.getElementById("loopids");
 					elemento.innerHTML = elemento.innerHTML + '<input class="input-nome" type="text" id="nome' + contadorids + '" value=" "> <input class="input-host" type="number" id="host' + contadorids + '" value="2" onchange="verificarCamposSubs()"><br>';
 					contadorids += 1;
 				}
@@ -141,15 +152,11 @@
 					var hostid = "host" + contadorids;
 					if(document.getElementById(hostid).value > hosttotal){
 						document.getElementById(hostid).value = hosttotal;
-						alert(hosttotal);
 					}
 					else if(document.getElementById(hostid).value < 2){
 						document.getElementById(hostid).value = 2;
 					}
 					contadortotal += parseInt(document.getElementById(hostid).value);
-					if(contadortotal >= 256){
-						document.getElementById(hostid).value = 1;
-					}
 					contadorids += 1;
 				}
 				
@@ -188,10 +195,10 @@
 					{
 						adicionar -= 1;
 						faixa4 = 0;
-						faixa3 += 1;
+						faixa3 = parseInt(faixa3) + 1;
 						if(faixa3 == 256){
 							faixa3 = 0;
-							faixa4 += 1;
+							faixa2 = parseInt(faixa2) + 1;
 						}
 
 					}
@@ -211,109 +218,118 @@
 				Str += " - Broadcast: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4) - 1);
 				return Str;
 			}
+			function voltarnnomessub(){
+				document.getElementById("nomessubredes").style.display = "block";
+				document.getElementById("resultado").style.display = "none";
+			}
 			function exibirResultado(){
 				calcularIp();
 				document.getElementById("nomessubredes").style.display = "none";
 				document.getElementById("resultado").style.display = "block";
 				contadorids = 0;
+				var elemento = document.getElementById("loopresult");
+				elemento.innerHTML = ""
 				while(document.getElementById("sredes").value > contadorids){
-					var elemento = document.getElementById("loopresult");
 					var hostid = "host" + contadorids;
 					var nomeid = "nome" + contadorids;
 					var stringmask = calcularMascara(document.getElementById(hostid).value);
 					elemento.innerHTML = elemento.innerHTML + "<br>" + document.getElementById(nomeid).value + " - ID: " + contadorids + "<br>"
-					elemento.innerHTML = elemento.innerHTML + imprimeIp(HostsPassar) + '<br>' + stringmask + '<br><hr>';
+					elemento.innerHTML = elemento.innerHTML + imprimeIp(parseInt(HostsPassar)) + '<br>' + stringmask + '<br><br><hr>';
 					contadorids += 1;
 				}
-				var HostsPassar = 0;
-				function calcularMascara(requerido){
-					var contmask = 1, resultadomask = 0, mascara = "";
-					var Strmask = "";
-					while(resultadomask < requerido){ // 2^n -2
-						contmask ++;
-						resultadomask = Math.pow(2, contmask) - 2;
-					}
-					var prefixo = 32 - parseInt(contmask);
-					switch(prefixo) {
-						case 31:
-							mascara = "255.255.255.254"
-							break;
-						case 30:
-							mascara = "255.255.255.252"
-							break;
-						case 29:
-							mascara = "255.255.255.248"
-							break;
-						case 28:
-							mascara = "255.255.255.240"
-							break;
-						case 27:
-							mascara = "255.255.255.224"
-							break;
-						case 26:
-							mascara = "255.255.255.192"
-							break;
-						case 25:
-							mascara = "255.255.255.128"
-							break;	
-						case 24:
-							mascara = "255.255.255.0"
-							break;	
-						case 23:
-							mascara = "255.255.254.0"
-							break;
-						case 22:
-							mascara = "255.255.252.0"
-							break;
-						case 21:
-							mascara = "255.255.248.0"
-							break;
-						case 20:
-							mascara = "255.255.240.0"
-							break;
-						case 19:
-							mascara = "255.255.224.0"
-							break;
-						case 18:
-							mascara = "255.255.192.0"
-							break;
-						case 17:
-							mascara = "255.255.128.0"
-							break;
-						case 16:
-							mascara = "255.255.0.0"
-							break;
-						case 15:
-							mascara = "255.254.0.0"
-							break;
-						case 14:
-							mascara = "255.252.0.0"
-							break;
-						case 13:
-							mascara = "255.248.0.0"
-							break;
-						case 12:
-							mascara = "255.240.0.0"
-							break;
-						case 11:
-							mascara = "255.224.0.0"
-							break;
-						case 10:
-							mascara = "255.192.0.0"
-							break;
-						case 9:
-							mascara = "255.128.0.0"
-							break;
-						case 8:
-							mascara = "255.0.0.0"
-							break;	
-					} 
-					Strmask = "Prefixo: /" + prefixo + " - Mascara: " + mascara + " - Alocados/Requeridos: " + resultadomask  + "/" + requerido;
-					HostsPassar = resultadomask;
-					return Strmask;
+			}
+			var HostsPassar = 0;
+			function calcularMascara(requerido){
+				var contmask = 1, resultadomask = 0, mascara = "";
+				var Strmask = "";
+				requerido = parseInt(requerido) + 2;
+				while(resultadomask < requerido){ // 2^n -2
+					contmask ++;
+					resultadomask = Math.pow(2, contmask) - 2;
 				}
+				var prefixo = 32 - parseInt(contmask);
+				switch(prefixo) {
+					case 31:
+						mascara = "255.255.255.254"
+						break;
+					case 30:
+						mascara = "255.255.255.252"
+						break;
+					case 29:
+						mascara = "255.255.255.248"
+						break;
+					case 28:
+						mascara = "255.255.255.240"
+						break;
+					case 27:
+						mascara = "255.255.255.224"
+						break;
+					case 26:
+						mascara = "255.255.255.192"
+						break;
+					case 25:
+						mascara = "255.255.255.128"
+						break;	
+					case 24:
+						mascara = "255.255.255.0"
+						break;	
+					case 23:
+						mascara = "255.255.254.0"
+						break;
+					case 22:
+						mascara = "255.255.252.0"
+						break;
+					case 21:
+						mascara = "255.255.248.0"
+						break;
+					case 20:
+						mascara = "255.255.240.0"
+						break;
+					case 19:
+						mascara = "255.255.224.0"
+						break;
+					case 18:
+						mascara = "255.255.192.0"
+						break;
+					case 17:
+						mascara = "255.255.128.0"
+						break;
+					case 16:
+						mascara = "255.255.0.0"
+						break;
+					case 15:
+						mascara = "255.254.0.0"
+						break;
+					case 14:
+						mascara = "255.252.0.0"
+						break;
+					case 13:
+						mascara = "255.248.0.0"
+						break;
+					case 12:
+						mascara = "255.240.0.0"
+						break;
+					case 11:
+						mascara = "255.224.0.0"
+						break;
+					case 10:
+						mascara = "255.192.0.0"
+						break;
+					case 9:
+						mascara = "255.128.0.0"
+						break;
+					case 8:
+						mascara = "255.0.0.0"
+						break;	
+				} 
+				Strmask = "Prefixo: /" + prefixo + " - Mascara: " + mascara + " - Requeridos/Alocados: " + requerido + "/" + (parseInt(resultadomask));
+				HostsPassar = resultadomask;
+				return Strmask;
 			}
 		</script>
+		<div id="CaboRede">
+			<img src="images/rede_1.png" height="200">
+		</div>
 		<div id="conteudo" class="centralizar">
 			<div id="logo" style="padding:10px;">
 				<h1 id="nome-topo">Calculadora de <br>Sub Redes</h1>
@@ -323,7 +339,7 @@
 					<input class="input-ip" type="number" id="part2" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
 					<input class="input-ip" type="number" id="part3" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
 					<input class="input-ip" type="number" id="part4" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> \ </b>
-					<input class="input-ip" type="number" id="part5" value="8" min="0" max="31" onchange="verificarcamposip()"><br><br>
+					<input class="input-ip" type="number" id="part5" value="8" min="0" max="29" onchange="verificarcamposip()"><br><br>
 					<b id="exibeclasse">IP Classe: A</b>
 					<script>verificarcamposip();</script>
 					<br><br><button type="button" class="botao" onclick="proximosubredes()">Continuar ></button>
@@ -332,6 +348,7 @@
 					Selecione a quantidade de sub redes que deseja criar:<br><br>
 					<input class="input-ip maiorsub" type="number" id="sredes" value="1" min="1" onchange="verificarsubredes()"><br>
 					<b id="rdpos"></b><br><br>
+					<button type="button" class="botao" onclick="voltexibirProximoescolhasubs()">< Voltar</button>
 					<button type="button" class="botao" onclick="proximoescolhasubs()">Continuar ></button>
 			</div>
 		</div>
@@ -339,11 +356,13 @@
 			<h1 id="nome-topo">Calculadora de <br>Sub Redes<br><br></h1>
 			<h2 class="fabsender">Nome - Hosts necessarios<br></h2>
 			<h3 id="loopids"></h3>
+			<button type="button" class="botao" onclick="voltexibirResultado()">< Voltar</button>
 			<button type="button" class="botao" onclick="exibirResultado()">Continuar ></button>
 		</div>
 		<div id="resultado" class ="box-transparente">
 			<h1 id="nome-topo">Calculadora de <br>Sub Redes<br><br></h1>
-			<h3 id="loopresult"></h3>
+			<h3 id="loopresult"></h3><br>
+			<button type="button" class="botao" onclick="voltarnnomessub()">< Voltar</button>
 		</div>
 	</body>
 
