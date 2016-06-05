@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="full" lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -11,10 +11,13 @@
 	</head>
 	<body>
 		<script>
+			var hosttotal = 0;
+			var possubredes = 0;
+			var faixa1, faixa2, faixa3, faixa4, classe;
 			function verificarcamposip(){
-				if((document.getElementById("part1").value > 255))
+				if((document.getElementById("part1").value > 223))
 				{
-					document.getElementById("part1").value = 255;
+					document.getElementById("part1").value = 223;
 				}
 				else if((document.getElementById("part1").value < 0))
 				{
@@ -48,9 +51,9 @@
 					document.getElementById("part4").value = 0;
 				}
 				
-				else if((document.getElementById("part5").value > 32))
+				else if((document.getElementById("part5").value > 31))
 				{
-					document.getElementById("part5").value = 32;
+					document.getElementById("part5").value = 31;
 				}
 				else if((document.getElementById("part5").value < 0))
 				{
@@ -59,41 +62,194 @@
 				Parte1 = document.getElementById("part1").value;
 				if((Parte1 >= 0) && (Parte1 <= 127)){
 					document.getElementById("exibeclasse").innerHTML = "IP Classe: A";
+					if(document.getElementById("part5").value < 8){
+						document.getElementById("part5").value = 8;
+					}
+					else if(document.getElementById("part5").value > 31){
+						document.getElementById("part5").value = 31;
+					}
+					possubredes = document.getElementById("part5").value - 8;
+					possubredes =  Math.pow(2, possubredes);
+					classe = 1;
 				}
 				else if((Parte1 >= 128) && (Parte1 <= 191)){
 					document.getElementById("exibeclasse").innerHTML = "IP Classe: B";
+					if(document.getElementById("part5").value < 16){
+						document.getElementById("part5").value = 16;
+					}
+					else if(document.getElementById("part5").value > 31){
+						document.getElementById("part5").value = 31;
+					}
+					possubredes = document.getElementById("part5").value - 16;
+					possubredes =  Math.pow(2, possubredes);
+					classe = 2;
 				}
 				else if((Parte1 >= 192) && (Parte1 <= 223)){
 					document.getElementById("exibeclasse").innerHTML = "IP Classe: C";
+					if(document.getElementById("part5").value < 24){
+						document.getElementById("part5").value = 24;
+					}
+					else if(document.getElementById("part5").value > 31){
+						document.getElementById("part5").value = 31;
+					}
+					possubredes = document.getElementById("part5").value - 24;
+					possubredes =  Math.pow(2, possubredes);
+
+					classe = 3;
 				}
-				else if((Parte1 >= 224) && (Parte1 <= 239)){
-					document.getElementById("exibeclasse").innerHTML = "IP Classe: D";
-				}
-				else if((Parte1 >= 240) && (Parte1 <= 255)){
-					document.getElementById("exibeclasse").innerHTML = "IP Classe: E";
+				if((possubredes == 128) || (possubredes == 8388608) || (possubredes == 32768)){
+					possubredes -= 1;
 				}
 			}
-			function subredes(){
+			function proximosubredes(){
 				document.getElementById("inseririp").style.display = "none";
 				document.getElementById("subredes").style.display = "block";
+				hosttotal = Math.pow(2, 32 - document.getElementById("part5").value) - 2;
+				if(hosttotal == 0){
+					hosttotal = 2;
+				}
+				document.getElementById("rdpos").innerHTML = "De 1 á " + possubredes + " SubRedes";
+			}
+			function verificarsubredes(){
+				if(document.getElementById("sredes").value > possubredes){
+					document.getElementById("sredes").value = possubredes;
+				}
+				else if(document.getElementById("sredes").value < 1){
+					document.getElementById("sredes").value = 1;
+				}
+			}
+			function proximoescolhasubs(){
+				document.getElementById("subredes").style.display = "none";
+				document.getElementById("conteudo").style.display = "none";
+				document.getElementById("nomessubredes").style.display = "block";
+				gerarCampos();
+			}
+			var contadorids = 0;
+			function gerarCampos(){
+				contadorids = 0;
+				while(document.getElementById("sredes").value > contadorids){
+					var elemento = document.getElementById("loopids");
+					elemento.innerHTML = elemento.innerHTML + '<input class="input-nome" type="text" id="nome' + contadorids + '" value=" "> <input class="input-host" type="number" id="host' + contadorids + '" value="2" onchange="verificarCamposSubs()"><br>';
+					contadorids += 1;
+				}
+			}
+			var contadortotal = 0;
+			function verificarCamposSubs(){
+				contadorids = 0;
+				contadortotal = 0;
+				while(document.getElementById("sredes").value > contadorids){
+					var hostid = "host" + contadorids;
+					if(document.getElementById(hostid).value > hosttotal){
+						document.getElementById(hostid).value = hosttotal;
+						alert(hosttotal);
+					}
+					else if(document.getElementById(hostid).value < 2){
+						document.getElementById(hostid).value = 2;
+					}
+					contadortotal += parseInt(document.getElementById(hostid).value);
+					if(contadortotal >= 256){
+						document.getElementById(hostid).value = 1;
+					}
+					contadorids += 1;
+				}
+				
+			}
+			function calcularIp(){
+				faixa1 = document.getElementById("part1").value;
+				if(classe = 1){
+					faixa2 = 0;
+					faixa3 = 0;
+					faixa4 = 0;
+				}
+				else if(classe = 2){
+					faixa2 = document.getElementById("part2").value;
+					faixa3 = 0;
+					faixa4 = 0;
+				}
+				else if(classe = 3){
+					faixa2 = document.getElementById("part2").value;
+					faixa3 = document.getElementById("part3").value;
+					faixa4 = 0;
+				}
+			}
+			function imprimeIp(adicionar){
+				var Str = "";
+				Str = "Rede: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + parseInt(faixa4);
+				if(adicionar == 3){
+					Str += " - Host: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4) + 1);
+				}
+				else if(adicionar > 3){
+					Str += " - 1ºHost: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4) + 1);
+				}
+				var adicionarx = adicionar;
+				while(adicionar > 0){
+					if(faixa4 == 255)
+					{
+						adicionar -= 1;
+						faixa4 = 0;
+						faixa3 += 1;
+					}
+					else if((adicionar - (255 - faixa4)) >= 0){
+						adicionar -= 255-faixa4;
+						faixa4 = 255;
+					}
+					else{
+						faixa4 = parseInt(faixa4) + parseInt(adicionar);
+						adicionar -= parseInt(faixa4);
+						}
+				}
+				if((adicionarx == 2) || (adicionarx == 3)){}
+				else {
+					Str += " - UltimoHost: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4) - 2);
+				}
+				Str += " - Broadcast: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4) - 1);
+				return Str;
+			}
+			function exibirResultado(){
+				calcularIp();
+				document.getElementById("nomessubredes").style.display = "none";
+				document.getElementById("resultado").style.display = "block";
+				contadorids = 0;
+				while(document.getElementById("sredes").value > contadorids){
+					var elemento = document.getElementById("loopresult");
+					var hostid = "host" + contadorids;
+					var nomeid = "nome" + contadorids;
+					elemento.innerHTML = elemento.innerHTML + "<br>" + document.getElementById(nomeid).value + " - ID: " + contadorids + "<br>"
+					elemento.innerHTML = elemento.innerHTML + imprimeIp(document.getElementById(hostid).value) + '<br><br><hr>';
+					contadorids += 1;
+				}
 			}
 		</script>
-		<div class="centralizar">
+		<div id="conteudo" class="centralizar">
 			<div id="logo" style="padding:10px;">
 				<h1 id="nome-topo">Calculadora de <br>Sub Redes</h1>
 			</div>
 			<div id="inseririp" class ="box-central">
-					<input class="input-ip" type="number" id="part1" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
+					<input class="input-ip" type="number" id="part1" value="0" min="0" max="223" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
 					<input class="input-ip" type="number" id="part2" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
 					<input class="input-ip" type="number" id="part3" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
 					<input class="input-ip" type="number" id="part4" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> \ </b>
-					<input class="input-ip" type="number" id="part5" value="0" min="0" max="32" onchange="verificarcamposip()"><br><br>
+					<input class="input-ip" type="number" id="part5" value="9" min="0" max="31" onchange="verificarcamposip()"><br><br>
 					<b id="exibeclasse">IP Classe: A</b>
-					<br><br><button type="button" class="botao" onclick="subredes()">Continuar ></button>
+					<script>verificarcamposip();</script>
+					<br><br><button type="button" class="botao" onclick="proximosubredes()">Continuar ></button>
 			</div>
-			<div id="subredes" class ="box-central">
-					Teste
+			<div id="subredes" class ="box-central box-maior">
+					Selecione a quantidade de sub redes que deseja criar:<br><br>
+					<input class="input-ip maiorsub" type="number" id="sredes" value="1" min="1" onchange="verificarsubredes()"><br>
+					<b id="rdpos"></b><br><br>
+					<button type="button" class="botao" onclick="proximoescolhasubs()">Continuar ></button>
 			</div>
+		</div>
+		<div id="nomessubredes" class ="box-transparente">
+			<h1 id="nome-topo">Calculadora de <br>Sub Redes<br><br></h1>
+			<h2 class="fabsender">Nome - Hosts necessarios<br></h2>
+			<h3 id="loopids"></h3>
+			<button type="button" class="botao" onclick="exibirResultado()">Continuar ></button>
+		</div>
+		<div id="resultado" class ="box-transparente">
+			<h1 id="nome-topo">Calculadora de <br>Sub Redes<br><br></h1>
+			<h3 id="loopresult"></h3>
 		</div>
 	</body>
 

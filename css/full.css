@@ -26,11 +26,39 @@ html, body {
 #subredes{
 	display: none;
 }
+#resultado{
+	display: none;
+	text-align: center;
+	margin: 1em auto;
+}
+#nomessubredes{
+	display: none;
+	text-align: center;
+	margin: 1em auto;
+}
 .input-ip{
 	border-radius: 5px;
 	border: 2px solid black;
 	font-size: 30px;
 	width: 80px;
+	text-align: center;
+}
+.maiorsub{
+	width: 150px;
+}
+.input-host{
+	border-radius: 5px;
+	border: 2px solid black;
+	font-size: 30px;
+	width: 120px;
+	margin-right:5px;
+	text-align: center;
+}
+.input-nome{
+	border-radius: 5px;
+	border: 2px solid black;
+	font-size: 30px;
+	width: 180px;
 	text-align: center;
 }
 .botaolargo{
@@ -42,6 +70,10 @@ html, body {
 	background: rgba(255, 255, 255, 0.8);
 	color: black;
 	font-family: "absender";
+}
+.fabsender{
+	font-family: "absender";
+	font-size: 20px;
 }
 .fonteabsender{
 	font-family: "absender";
@@ -59,7 +91,17 @@ html, body {
 	text-align: center;
 	
 }
-
+.box-transparente{
+	width:	800px;
+	background: rgba(0, 0, 0, 0.8);
+	color: white;
+	border-radius:20px;
+	text-align: center;
+	padding: 2em;
+}
+.box-maior{
+	height: 140px;
+}
 .centralizar {
   height: 100%;
   min-height: 100%;
