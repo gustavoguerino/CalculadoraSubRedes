@@ -157,13 +157,13 @@
 			function calcularIp(){
 				faixa1 = document.getElementById("part1").value;
 				if(classe = 1){
-					faixa2 = 0;
-					faixa3 = 0;
+					faixa2 = document.getElementById("part2").value;
+					faixa3 = document.getElementById("part3").value;
 					faixa4 = 0;
 				}
 				else if(classe = 2){
 					faixa2 = document.getElementById("part2").value;
-					faixa3 = 0;
+					faixa3 = document.getElementById("part3").value;
 					faixa4 = 0;
 				}
 				else if(classe = 3){
@@ -171,6 +171,7 @@
 					faixa3 = document.getElementById("part3").value;
 					faixa4 = 0;
 				}
+				
 			}
 			function imprimeIp(adicionar){
 				var Str = "";
@@ -188,6 +189,11 @@
 						adicionar -= 1;
 						faixa4 = 0;
 						faixa3 += 1;
+						if(faixa3 == 256){
+							faixa3 = 0;
+							faixa4 += 1;
+						}
+
 					}
 					else if((adicionar - (255 - faixa4)) >= 0){
 						adicionar -= 255-faixa4;
@@ -214,9 +220,97 @@
 					var elemento = document.getElementById("loopresult");
 					var hostid = "host" + contadorids;
 					var nomeid = "nome" + contadorids;
+					var stringmask = calcularMascara(document.getElementById(hostid).value);
 					elemento.innerHTML = elemento.innerHTML + "<br>" + document.getElementById(nomeid).value + " - ID: " + contadorids + "<br>"
-					elemento.innerHTML = elemento.innerHTML + imprimeIp(document.getElementById(hostid).value) + '<br><br><hr>';
+					elemento.innerHTML = elemento.innerHTML + imprimeIp(HostsPassar) + '<br>' + stringmask + '<br><hr>';
 					contadorids += 1;
+				}
+				var HostsPassar = 0;
+				function calcularMascara(requerido){
+					var contmask = 1, resultadomask = 0, mascara = "";
+					var Strmask = "";
+					while(resultadomask < requerido){ // 2^n -2
+						contmask ++;
+						resultadomask = Math.pow(2, contmask) - 2;
+					}
+					var prefixo = 32 - parseInt(contmask);
+					switch(prefixo) {
+						case 31:
+							mascara = "255.255.255.254"
+							break;
+						case 30:
+							mascara = "255.255.255.252"
+							break;
+						case 29:
+							mascara = "255.255.255.248"
+							break;
+						case 28:
+							mascara = "255.255.255.240"
+							break;
+						case 27:
+							mascara = "255.255.255.224"
+							break;
+						case 26:
+							mascara = "255.255.255.192"
+							break;
+						case 25:
+							mascara = "255.255.255.128"
+							break;	
+						case 24:
+							mascara = "255.255.255.0"
+							break;	
+						case 23:
+							mascara = "255.255.254.0"
+							break;
+						case 22:
+							mascara = "255.255.252.0"
+							break;
+						case 21:
+							mascara = "255.255.248.0"
+							break;
+						case 20:
+							mascara = "255.255.240.0"
+							break;
+						case 19:
+							mascara = "255.255.224.0"
+							break;
+						case 18:
+							mascara = "255.255.192.0"
+							break;
+						case 17:
+							mascara = "255.255.128.0"
+							break;
+						case 16:
+							mascara = "255.255.0.0"
+							break;
+						case 15:
+							mascara = "255.254.0.0"
+							break;
+						case 14:
+							mascara = "255.252.0.0"
+							break;
+						case 13:
+							mascara = "255.248.0.0"
+							break;
+						case 12:
+							mascara = "255.240.0.0"
+							break;
+						case 11:
+							mascara = "255.224.0.0"
+							break;
+						case 10:
+							mascara = "255.192.0.0"
+							break;
+						case 9:
+							mascara = "255.128.0.0"
+							break;
+						case 8:
+							mascara = "255.0.0.0"
+							break;	
+					} 
+					Strmask = "Prefixo: /" + prefixo + " - Mascara: " + mascara + " - Alocados/Requeridos: " + resultadomask  + "/" + requerido;
+					HostsPassar = resultadomask;
+					return Strmask;
 				}
 			}
 		</script>
@@ -229,7 +323,7 @@
 					<input class="input-ip" type="number" id="part2" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
 					<input class="input-ip" type="number" id="part3" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
 					<input class="input-ip" type="number" id="part4" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> \ </b>
-					<input class="input-ip" type="number" id="part5" value="9" min="0" max="31" onchange="verificarcamposip()"><br><br>
+					<input class="input-ip" type="number" id="part5" value="8" min="0" max="31" onchange="verificarcamposip()"><br><br>
 					<b id="exibeclasse">IP Classe: A</b>
 					<script>verificarcamposip();</script>
 					<br><br><button type="button" class="botao" onclick="proximosubredes()">Continuar ></button>
