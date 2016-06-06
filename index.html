@@ -61,44 +61,41 @@
 				}	
 				Parte1 = document.getElementById("part1").value;
 				if((Parte1 >= 0) && (Parte1 <= 127)){
-					document.getElementById("exibeclasse").innerHTML = "IP Classe: A";
+					<!-- document.getElementById("exibeclasse").innerHTML = "IP Classe: A";-->
 					if(document.getElementById("part5").value < 8){
 						document.getElementById("part5").value = 8;
 					}
-					else if(document.getElementById("part5").value > 29){
-						document.getElementById("part5").value = 29;
+					else if(document.getElementById("part5").value > 30){
+						document.getElementById("part5").value = 30;
 					}
-					possubredes = document.getElementById("part5").value - 8;
+					possubredes = 31 - document.getElementById("part5").value;
 					possubredes =  Math.pow(2, possubredes);
 					classe = 1;
 				}
 				else if((Parte1 >= 128) && (Parte1 <= 191)){
-					document.getElementById("exibeclasse").innerHTML = "IP Classe: B";
+					<!--document.getElementById("exibeclasse").innerHTML = "IP Classe: B";-->
 					if(document.getElementById("part5").value < 16){
 						document.getElementById("part5").value = 16;
 					}
-					else if(document.getElementById("part5").value > 29){
-						document.getElementById("part5").value = 29;
+					else if(document.getElementById("part5").value > 30){
+						document.getElementById("part5").value = 30;
 					}
-					possubredes = document.getElementById("part5").value - 16;
+					possubredes = 31 - document.getElementById("part5").value;
 					possubredes =  Math.pow(2, possubredes);
 					classe = 2;
 				}
 				else if((Parte1 >= 192) && (Parte1 <= 223)){
-					document.getElementById("exibeclasse").innerHTML = "IP Classe: C";
+					<!--document.getElementById("exibeclasse").innerHTML = "IP Classe: C";-->
 					if(document.getElementById("part5").value < 24){
 						document.getElementById("part5").value = 24;
 					}
-					else if(document.getElementById("part5").value > 29){
-						document.getElementById("part5").value = 29;
+					else if(document.getElementById("part5").value > 30){
+						document.getElementById("part5").value = 30;
 					}
-					possubredes = document.getElementById("part5").value - 24;
+					possubredes = 31 - document.getElementById("part5").value;
 					possubredes =  Math.pow(2, possubredes);
 
 					classe = 3;
-				}
-				if((possubredes == 128) || (possubredes == 8388608) || (possubredes == 32768)){
-					possubredes -= 1;
 				}
 			}
 			function voltexibirProximoescolhasubs(){
@@ -140,45 +137,40 @@
 				elemento.innerHTML = ""
 				while(document.getElementById("sredes").value > contadorids){
 					elemento = document.getElementById("loopids");
-					elemento.innerHTML = elemento.innerHTML + '<input class="input-nome" type="text" id="nome' + contadorids + '" value=" "> <input class="input-host" type="number" id="host' + contadorids + '" value="2" onchange="verificarCamposSubs()"><br>';
+					elemento.innerHTML = elemento.innerHTML + '<input class="input-nome" type="text" id="nome' + contadorids + '" value=" "> <input class="input-host" type="number" id="host' + contadorids + '" value="0" onchange="verificarCamposSubs()"><br>';
 					contadorids += 1;
 				}
 			}
-			var contadortotal = 0;
 			function verificarCamposSubs(){
 				contadorids = 0;
-				contadortotal = 0;
-				while(document.getElementById("sredes").value > contadorids){
+				var contadorGeral = 0;
+				var subredesvar = document.getElementById("sredes");
+				while(subredesvar.value > contadorids){
 					var hostid = "host" + contadorids;
-					if(document.getElementById(hostid).value > hosttotal){
-						document.getElementById(hostid).value = hosttotal;
+
+					var valorHost = document.getElementById(hostid);
+					if(valorHost.value > ((parseInt(hosttotal)) - 2)){
+						valorHost.value = (parseInt(hosttotal)) - 2;
 					}
-					else if(document.getElementById(hostid).value < 2){
-						document.getElementById(hostid).value = 2;
+					else if(valorHost.value < 0){
+						valorHost.value = 0;
 					}
-					contadortotal += parseInt(document.getElementById(hostid).value);
+					alert(hosttotal);
+					calcularMascara(valorHost.value);
+					contadorGeral += parseInt(HostsPassar);
+					if(contadorGeral > hosttotal*subredesvar.value)
+					{
+						valorHost.value = parseInt(hosttotal) - parseInt(contadorGeral) - 2;
+						contadorids = subredesvar.value;
+					}
 					contadorids += 1;
 				}
-				
 			}
 			function calcularIp(){
 				faixa1 = document.getElementById("part1").value;
-				if(classe = 1){
-					faixa2 = document.getElementById("part2").value;
-					faixa3 = document.getElementById("part3").value;
-					faixa4 = 0;
-				}
-				else if(classe = 2){
-					faixa2 = document.getElementById("part2").value;
-					faixa3 = document.getElementById("part3").value;
-					faixa4 = 0;
-				}
-				else if(classe = 3){
-					faixa2 = document.getElementById("part2").value;
-					faixa3 = document.getElementById("part3").value;
-					faixa4 = 0;
-				}
-				
+				faixa2 = document.getElementById("part2").value;
+				faixa3 = document.getElementById("part3").value;
+				faixa4 = 0;		
 			}
 			function imprimeIp(adicionar){
 				var Str = "";
@@ -323,7 +315,7 @@
 						break;	
 				} 
 				Strmask = "Prefixo: /" + prefixo + " - Mascara: " + mascara + " - Requeridos/Alocados: " + requerido + "/" + (parseInt(resultadomask));
-				HostsPassar = resultadomask;
+				HostsPassar = parseInt(resultadomask) + 2;
 				return Strmask;
 			}
 		</script>
@@ -340,7 +332,7 @@
 					<input class="input-ip" type="number" id="part3" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
 					<input class="input-ip" type="number" id="part4" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> \ </b>
 					<input class="input-ip" type="number" id="part5" value="8" min="0" max="29" onchange="verificarcamposip()"><br><br>
-					<b id="exibeclasse">IP Classe: A</b>
+
 					<script>verificarcamposip();</script>
 					<br><br><button type="button" class="botao" onclick="proximosubredes()">Continuar ></button>
 			</div>
