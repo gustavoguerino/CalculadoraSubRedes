@@ -61,7 +61,7 @@
 				}	
 				Parte1 = document.getElementById("part1").value;
 				if((Parte1 >= 0) && (Parte1 <= 127)){
-					<!-- document.getElementById("exibeclasse").innerHTML = "IP Classe: A";-->
+					document.getElementById("exibeclasse").innerHTML = "IP Classe: A";
 					if(document.getElementById("part5").value < 8){
 						document.getElementById("part5").value = 8;
 					}
@@ -73,7 +73,7 @@
 					classe = 1;
 				}
 				else if((Parte1 >= 128) && (Parte1 <= 191)){
-					<!--document.getElementById("exibeclasse").innerHTML = "IP Classe: B";-->
+					document.getElementById("exibeclasse").innerHTML = "IP Classe: B";
 					if(document.getElementById("part5").value < 16){
 						document.getElementById("part5").value = 16;
 					}
@@ -85,7 +85,7 @@
 					classe = 2;
 				}
 				else if((Parte1 >= 192) && (Parte1 <= 223)){
-					<!--document.getElementById("exibeclasse").innerHTML = "IP Classe: C";-->
+					document.getElementById("exibeclasse").innerHTML = "IP Classe: C";
 					if(document.getElementById("part5").value < 24){
 						document.getElementById("part5").value = 24;
 					}
@@ -109,7 +109,7 @@
 				if(hosttotal == 0){
 					hosttotal = 2;
 				}
-				document.getElementById("rdpos").innerHTML = "De 1 á " + possubredes + " SubRedes";
+				<!--document.getElementById("rdpos").innerHTML = "De 1 á " + possubredes + " SubRedes";-->
 			}
 			function verificarsubredes(){
 				if(document.getElementById("sredes").value > possubredes){
@@ -147,20 +147,28 @@
 				var subredesvar = document.getElementById("sredes");
 				while(subredesvar.value > contadorids){
 					var hostid = "host" + contadorids;
-
+					var hostsmaximossoma = 0;
+					if(classe == 1){
+						hostsmaximossoma = 16777214;
+					}
+					else if(classe == 2){
+						hostsmaximossoma = 65534;
+					}
+					else{
+						hostsmaximossoma = 254;
+					}
 					var valorHost = document.getElementById(hostid);
-					if(valorHost.value > ((parseInt(hosttotal)) - 2)){
-						valorHost.value = (parseInt(hosttotal)) - 2;
+					if(valorHost.value > parseInt(hostsmaximossoma / 2) - 1){
+						valorHost.value = parseInt(hostsmaximossoma / 2) - 1;
 					}
 					else if(valorHost.value < 0){
 						valorHost.value = 0;
 					}
-					alert(hosttotal);
 					calcularMascara(valorHost.value);
 					contadorGeral += parseInt(HostsPassar);
-					if(contadorGeral > hosttotal*subredesvar.value)
+					if(contadorGeral > hostsmaximossoma)
 					{
-						valorHost.value = parseInt(hosttotal) - parseInt(contadorGeral) - 2;
+						valorHost.value = parseInt(hostsmaximossoma / 2) - 1;
 						contadorids = subredesvar.value;
 					}
 					contadorids += 1;
@@ -182,10 +190,12 @@
 					Str += " - 1ºHost: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4) + 1);
 				}
 				var adicionarx = adicionar;
-				while(adicionar > 0){
+				var adicionary = adicionar;
+				adicionary -= 2;
+				while(adicionary > 0){
 					if(faixa4 == 255)
 					{
-						adicionar -= 1;
+						adicionary -= 1;
 						faixa4 = 0;
 						faixa3 = parseInt(faixa3) + 1;
 						if(faixa3 == 256){
@@ -194,20 +204,64 @@
 						}
 
 					}
-					else if((adicionar - (255 - faixa4)) >= 0){
-						adicionar -= 255-faixa4;
+					else if((adicionary - (255 - faixa4)) >= 0){
+						adicionary -= 255-faixa4;
 						faixa4 = 255;
 					}
 					else{
-						faixa4 = parseInt(faixa4) + parseInt(adicionar);
-						adicionar -= parseInt(faixa4);
-						}
+						faixa4 = parseInt(faixa4) + parseInt(adicionary);
+						adicionary -= parseInt(faixa4);
+					}
 				}
 				if((adicionarx == 2) || (adicionarx == 3)){}
 				else {
-					Str += " - UltimoHost: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4) - 2);
+					Str += " - UltimoHost: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4));
 				}
-				Str += " - Broadcast: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4) - 1);
+				adicionary = 1;
+				while(adicionary > 0){
+					if(faixa4 == 255)
+					{
+						adicionary -= 1;
+						faixa4 = 0;
+						faixa3 = parseInt(faixa3) + 1;
+						if(faixa3 == 256){
+							faixa3 = 0;
+							faixa2 = parseInt(faixa2) + 1;
+						}
+
+					}
+					else if((adicionary - (255 - faixa4)) >= 0){
+						adicionary -= 255-faixa4;
+						faixa4 = 255;
+					}
+					else{
+						faixa4 = parseInt(faixa4) + parseInt(adicionary);
+						adicionary -= parseInt(faixa4);
+					}
+				}
+				Str += " - Broadcast: " + parseInt(faixa1) + "." + parseInt(faixa2) + "." + parseInt(faixa3) + "." + (parseInt(faixa4));
+				adicionary = 1;
+				while(adicionary > 0){
+					if(faixa4 == 255)
+					{
+						adicionary -= 1;
+						faixa4 = 0;
+						faixa3 = parseInt(faixa3) + 1;
+						if(faixa3 == 256){
+							faixa3 = 0;
+							faixa2 = parseInt(faixa2) + 1;
+						}
+
+					}
+					else if((adicionary - (255 - faixa4)) >= 0){
+						adicionary -= 255-faixa4;
+						faixa4 = 255;
+					}
+					else{
+						faixa4 = parseInt(faixa4) + parseInt(adicionary);
+						adicionary -= parseInt(faixa4);
+					}
+				}
 				return Str;
 			}
 			function voltarnnomessub(){
@@ -228,6 +282,39 @@
 					elemento.innerHTML = elemento.innerHTML + "<br>" + document.getElementById(nomeid).value + " - ID: " + contadorids + "<br>"
 					elemento.innerHTML = elemento.innerHTML + imprimeIp(parseInt(HostsPassar)) + '<br>' + stringmask + '<br><br><hr>';
 					contadorids += 1;
+				}
+				if(classe == 3){
+					if(faixa3 != document.getElementById("part3").value){
+						document.getElementById("erros").innerHTML = "Erro: Limite da Classe estourada."
+					}
+					else if(faixa2 != document.getElementById("part2").value){
+						document.getElementById("erros").innerHTML = "Erro: Limite da Classe estourada."
+					}
+					else if(faixa1 != document.getElementById("part1").value){
+						document.getElementById("erros").innerHTML = "Erro: Limite da Classe estourada."
+					}
+					else{
+						document.getElementById("erros").innerHTML = ""
+					}
+				}
+				else if(classe == 2){
+					if(faixa2 != document.getElementById("part2").value){
+						document.getElementById("erros").innerHTML = "Erro: Limite da Classe estourada."
+					}
+					else if(faixa1 != document.getElementById("part1").value){
+						document.getElementById("erros").innerHTML = "Erro: Limite da Classe estourada."
+					}
+					else{
+						document.getElementById("erros").innerHTML = ""
+					}
+				}
+				else if(classe == 1){
+					if(faixa1 != document.getElementById("part1").value){
+						document.getElementById("erros").innerHTML = "Erro: Limite da Classe estourada."
+					}
+					else{
+						document.getElementById("erros").innerHTML = ""
+					}
 				}
 			}
 			var HostsPassar = 0;
@@ -332,8 +419,7 @@
 					<input class="input-ip" type="number" id="part3" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> . </b>
 					<input class="input-ip" type="number" id="part4" value="0" min="0" max="255" onchange="verificarcamposip()"><b class="fonteabsender"> \ </b>
 					<input class="input-ip" type="number" id="part5" value="8" min="0" max="29" onchange="verificarcamposip()"><br><br>
-
-					<script>verificarcamposip();</script>
+					<span id="exibeclasse">IP Classe: A</span>
 					<br><br><button type="button" class="botao" onclick="proximosubredes()">Continuar ></button>
 			</div>
 			<div id="subredes" class ="box-central box-maior">
@@ -347,12 +433,14 @@
 		<div id="nomessubredes" class ="box-transparente">
 			<h1 id="nome-topo">Calculadora de <br>Sub Redes<br><br></h1>
 			<h2 class="fabsender">Nome - Hosts necessarios<br></h2>
+			<h2 class="fabsender vermelhomenor">*Recomendado: Da sub-rede com maior numero de hosts para a menor!<br></h2>
 			<h3 id="loopids"></h3>
 			<button type="button" class="botao" onclick="voltexibirResultado()">< Voltar</button>
 			<button type="button" class="botao" onclick="exibirResultado()">Continuar ></button>
 		</div>
 		<div id="resultado" class ="box-transparente">
 			<h1 id="nome-topo">Calculadora de <br>Sub Redes<br><br></h1>
+			<h2 id="erros" class="fabsender vermelhomaior"></h2><br></h2>
 			<h3 id="loopresult"></h3><br>
 			<button type="button" class="botao" onclick="voltarnnomessub()">< Voltar</button>
 		</div>

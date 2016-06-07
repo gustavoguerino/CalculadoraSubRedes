@@ -123,6 +123,15 @@ html, body {
   -webkit-justify-content: center;
   justify-content: center;
 }
+.vermelhomenor{
+	font-size: 14px;
+	color: red;
+}
+.vermelhomaior{
+	font-size: 20px;
+	color: red;
+	
+}
 .botao {
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
 	background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
